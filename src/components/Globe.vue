@@ -19,7 +19,7 @@ onMounted(() => {
 
   console.log(getFullUrl("/auberean.jpg"));
   console.log(aubereanRegions);
-  Auberean(globeEl.value).globeImageUrl(getFullUrl("/auberean.png"));
+  Auberean(globeEl.value).globeImageUrl(getFullUrl("/auberean-globe/auberean.png"));
 
   Auberean.backgroundImageUrl(
     "//unpkg.com/three-globe/example/img/night-sky.png"
@@ -38,7 +38,7 @@ onMounted(() => {
   const globeMaterial = Auberean.globeMaterial();
   globeMaterial.bumpScale = 20;
   new THREE.TextureLoader().load(
-    getFullUrl("/auberean-water.png"),
+    getFullUrl("/auberean-glboe/auberean-water.png"),
     (texture) => {
       globeMaterial.specularMap = texture;
       globeMaterial.specular = new THREE.Color("grey");
