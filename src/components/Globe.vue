@@ -19,7 +19,7 @@ onMounted(() => {
 
   console.log(getFullUrl("/auberean-globe/auberean.jpg"));
   console.log(aubereanRegions);
-  Auberean(globeEl.value).globeImageUrl(getFullUrl("/auberean-globe/auberean.png"));
+  Auberean(globeEl.value).globeImageUrl(getFullUrl("/auberean-globe/auberean-upscale.jpg"));
 
   Auberean.backgroundImageUrl(
     "//unpkg.com/three-globe/example/img/night-sky.png"
