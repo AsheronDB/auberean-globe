@@ -17,7 +17,7 @@ function getFullUrl(relativeUrl) {
 onMounted(() => {
   const Auberean = Globe({animateIn: false });
 
-  console.log(getFullUrl("/auberean.jpg"));
+  console.log(getFullUrl("/auberean-globe/auberean.jpg"));
   console.log(aubereanRegions);
   Auberean(globeEl.value).globeImageUrl(getFullUrl("/auberean-globe/auberean.png"));
 
@@ -38,7 +38,7 @@ onMounted(() => {
   const globeMaterial = Auberean.globeMaterial();
   globeMaterial.bumpScale = 20;
   new THREE.TextureLoader().load(
-    getFullUrl("/auberean-glboe/auberean-water.png"),
+    getFullUrl("/auberean-globe/auberean-water.png"),
     (texture) => {
       globeMaterial.specularMap = texture;
       globeMaterial.specular = new THREE.Color("grey");
