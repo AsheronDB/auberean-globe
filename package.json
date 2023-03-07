@@ -9,6 +9,8 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "globe.gl": "^2.27.1",
+    "three": "^0.150.1",
     "vue": "^3.2.38"
   },
   "devDependencies": {
