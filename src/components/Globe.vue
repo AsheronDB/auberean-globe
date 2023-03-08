@@ -3,7 +3,7 @@
     <div id="header">
       <h1>Auberean</h1>
       <p>
-        <span class="albarel">Alb'arel ,</span
+        <span class="albarel">Alb'arel, </span
         ><span class="rezarel">Rez'arel</span>
       </p>
     </div>
