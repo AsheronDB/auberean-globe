@@ -148,7 +148,7 @@ const moonLayerData = ref([
       {
         ...Object.assign(MOONS.ALBAREL, {
           texture: new THREE.TextureLoader().load(
-            getFullUrl(`/auberean-globe/img/rezarel.jpg`)
+            getFullUrl(`/auberean-globe/img/albarel-dark.jpg`)
           ),
         }),
       },
