@@ -74,7 +74,7 @@ const labelsData = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [42, -145],
+        coordinates: [40, -145],
       },
       properties: {
         name: "Dericost",
@@ -85,7 +85,7 @@ const labelsData = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [46.5, -55.5],
+        coordinates: [45, -55.5],
       },
       properties: {
         name: "Dereth",
@@ -107,7 +107,7 @@ const labelsData = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [75, 22],
+        coordinates: [72, 22],
       },
       properties: {
         name: "Ruschk",
@@ -118,7 +118,7 @@ const labelsData = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [-25, -42],
+        coordinates: [-26.5, -42],
       },
       properties: {
         name: "Yalaini\nArchipelago",
@@ -129,7 +129,7 @@ const labelsData = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [-49, 160],
+        coordinates: [-50, 160],
       },
       properties: {
         name: "Black Rains\nImpact Site",
@@ -177,7 +177,6 @@ const drawLabels = () => {
     .labelText((d) => d.properties.name)
     .labelIncludeDot(false)
     .labelsTransitionDuration(0)
-    .labelDotRadius((d) => 0)
     .labelColor(() => "rgba(255, 255, 255, 1)")
     .labelResolution(2);
 };
