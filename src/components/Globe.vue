@@ -49,11 +49,14 @@
         </button>
       </div>
     </div>
+    <div class="source"  v-if="source">
+      <p v-html="source"></p>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import Globe from "globe.gl";
 import * as THREE from "three";
 import aubereanRegions from "@/assets/data/auberean-regions.geo";
@@ -186,6 +189,25 @@ const drawLabels = () => {
     .htmlTransitionDuration(0);
 };
 
+const source = computed(() => {
+    let creditString;
+  switch (activeMap.value) {
+    case "realistic":
+    case "globe":
+    case "map":
+      creditString = "© Copyright WB Games. Used for educational purposes.";
+      break;
+    case "sketch":
+      creditString = `Source: <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Asheron's Call Wiki, Chris L'Etoile (Stormwaltz)</a>`;
+      break;
+    default:
+      creditString = null;
+      break;
+  }
+
+  return creditString;
+});
+
 watch(showLabels, (newVal) => {
   if (newVal) {
     drawLabels();
@@ -200,8 +222,6 @@ const toggleLabels = () => {
 };
 
 const onChangeMap = (mapType) => {
-
-
   activeMap.value = mapType;
 
   switch (mapType) {
@@ -223,9 +243,9 @@ const onChangeMap = (mapType) => {
       break;
     case "sketch":
       Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/aub-sketch.jpg")
+        getFullUrl("/auberean-globe/auberean-sketch.jpg")
       );
-    //   showLabels.value = false;
+      //   showLabels.value = false;
       break;
   }
 };
@@ -429,5 +449,23 @@ onMounted(() => {
   color: #fff !important;
   text-align: center;
   display: block;
+}
+
+.source {
+    position: absolute;
+    bottom: 12px; right: 12px;
+    color: #fff;
+    z-index: 5000;
+    opacity: .35;
+    font-size: 13px;
+    font-weight: bold;
+text-shadow: 0 0 15px #000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.source p { margin: 0; padding: 0; }
+
+:deep(.source a) {
+    color: #fff; text-decoration: none;
 }
 </style>
