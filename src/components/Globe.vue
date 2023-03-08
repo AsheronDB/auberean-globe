@@ -1,18 +1,13 @@
 <template>
   <div>
     <div id="header">
-      <div class="tree">
-        <ul>
-          <li>
-            <h1>Auberean</h1>
-            <ul>
-              <li class="albarel">Alb'arel</li>
-              <li class="rezarel">Rez'arel</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+      <h1>Auberean</h1>
+      <p>
+        <span class="albarel">Alb'arel ,</span
+        ><span class="rezarel">Rez'arel</span>
+      </p>
     </div>
+
     <div id="globe" ref="globeEl"></div>
     <div id="controls">
       <div class="group">
