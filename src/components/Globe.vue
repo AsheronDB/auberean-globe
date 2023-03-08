@@ -3,211 +3,236 @@
     <div id="header">
       <h1>Auberean</h1>
       <p>
-        <span class="albarel">Alb'arel,</span> <span class="rezarel">Rez'arel</span>
+        <span class="albarel">Alb'arel, </span
+        ><span class="rezarel">Rez'arel</span>
       </p>
     </div>
     <div id="globe" ref="globeEl"></div>
     <div id="controls">
       <div class="group">
-        <button
-          type="button"
-          @click="onChangeMap('realistic')"
-          :class="{ active: activeMap == 'realistic' }"
-        >
-          Realistic
-        </button>
-        <button
-          type="button"
-          @click="onChangeMap('globe')"
-          :class="{ active: activeMap == 'globe' }"
-        >
-          Globe of Auberean
-        </button>
-        <button
-          type="button"
-          @click="onChangeMap('map')"
-          :class="{ active: activeMap == 'map' }"
-        >
-          Map of Auberean
-        </button>
-        <button
-          type="button"
-          @click="onChangeMap('sketch')"
-          :class="{ active: activeMap == 'sketch' }"
-        >
-          Early Sketch
-        </button>
+        <ul>
+          <li
+            v-for="layer in globeLayerData"
+            :key="layer.handle"
+            :class="{ active: activeGlobeLayerHandle == layer.handle }"
+          >
+            <a
+              href="#"
+              @click.prevent="activeGlobeLayerHandle = layer.handle"
+              >{{ layer.label }}</a
+            >
+          </li>
+        </ul>
       </div>
       <div class="group">
-        <button type="button" @click="toggleLabels">
+        <ul>
+          <li
+            v-for="layer in moonLayerData"
+            :key="layer.handle"
+            :class="{ active: activeMoonLayerHandle == layer.handle }"
+          >
+            <a href="#" @click.prevent="activeMoonLayerHandle = layer.handle">{{
+              layer.label
+            }}</a>
+          </li>
+        </ul>
+
+        <!-- <button type="button" @click="toggleLabels">
           <span v-if="showLabels">Hide</span><span v-else>Show</span> Labels
         </button>
         <button type="button" @click="toggleRotation">
           <span v-if="isRotating">Pause</span><span v-else>Start</span> Camera
           Spin
+        </button> -->
+      </div>
+
+      <div class="group">
+        <ul>
+          <li>
+            <a href="#" @click.prevent="toggleLabels"
+              ><span v-if="showLabels">Hide</span
+              ><span v-else>Show</span> Labels</a
+            >
+          </li>
+          <li>
+            <a href="#" @click.prevent="toggleRotation"
+              ><span v-if="isRotating">Pause</span
+              ><span v-else>Start</span> Camera Spin</a
+            >
+          </li>
+        </ul>
+
+        <!-- <button type="button" @click="toggleLabels">
+          <span v-if="showLabels">Hide</span><span v-else>Show</span> Labels
         </button>
+        <button type="button" @click="toggleRotation">
+          <span v-if="isRotating">Pause</span><span v-else>Start</span> Camera
+          Spin
+        </button> -->
       </div>
     </div>
-    <div class="source" v-if="source">
-      <p v-html="source"></p>
+    <div class="source" v-if="activeGlobeLayer">
+      <p v-html="activeGlobeLayer.source"></p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, watch, computed, reactive } from "vue";
 import Globe from "globe.gl";
 import * as THREE from "three";
-import aubereanRegions from "@/assets/data/auberean-regions.geo";
+import {
+  MOONS,
+  GLOBE_LAYERS,
+  MOON_LAYERS,
+  LABELS_DATA,
+} from "@/common/constants.js";
 
 const globeEl = ref();
+const Auberean = ref();
 const isRotating = ref(true);
-const activeMap = ref("realistic");
+const activeGlobeLayerHandle = ref(GLOBE_LAYERS.REALISTIC);
+const activeMoonLayerHandle = ref(MOON_LAYERS.NORMAL);
+const showLabels = ref(true);
 
 function getFullUrl(relativeUrl) {
   return new URL(relativeUrl, import.meta.url).href;
 }
 
-const Auberean = ref();
+const globeLayerData = ref([
+  {
+    label: "Realistic",
+    handle: GLOBE_LAYERS.REALISTIC,
+    filePath: "auberean-realistic.jpg?v=" + (+new Date()).toString(36),
+    atmoAlt: 0.18,
+    source: `© Copyright WB Games, <a href="https://web.archive.org/web/20170224045357/http://www.imaginaryatlas.com/2013/03/29/dereth-in-context-the-world-of-asherons-call/" target="_blank">Robert Wild, Imaginary Atlas</a>`,
+  },
+  {
+    label: "Globe of Auberean",
+    handle: GLOBE_LAYERS.GLOBE,
+    filePath: "auberean-globe.jpg?v=" + (+new Date()).toString(36),
+    atmoAlt: 0,
+    source: "© Copyright WB Games",
+  },
+  {
+    label: "Map of Auberean",
+    handle: GLOBE_LAYERS.MAP,
+    filePath: "auberean-map.jpg?v=" + (+new Date()).toString(36),
+    atmoAlt: 0,
+    source: "© Copyright WB Games",
+  },
+  {
+    label: "Early Sketch",
+    handle: GLOBE_LAYERS.SKETCH,
+    filePath: "auberean-sketch.jpg?v=" + (+new Date()).toString(36),
+    atmoAlt: 0,
+    source: `© Copyright WB Games, <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Chris L'Etoile (Stormwaltz)</a>`,
+  },
+]);
 
-const labelsData = {
-  features: [
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [36, -145],
-      },
-      properties: {
-        name: "Dericost",
-        labelSize: 26,
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [46.5, -52.4],
-      },
-      properties: {
-        name: "Dereth",
-        labelSize: 16,
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [12, 45],
-      },
-      properties: {
-        name: "Haebrous",
-        labelSize: 26,
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [72, 22],
-      },
-      properties: {
-        name: "Ruschk",
-        labelSize: 18,
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-30, -42],
-      },
-      properties: {
-        name: "Yalaini<br />Archipelago",
-        labelSize: 24,
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-50, 160],
-      },
-      properties: {
-        name: "Black Rains<br />Impact Site",
-        labelSize: 16,
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [16, 126],
-      },
-      properties: {
-        name: "Falatacot (?)",
-        labelSize: 21,
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [68, -34],
-      },
-      properties: {
-        name: "Uninhabited<br /><small>(Strange Ruins)</small>",
-        labelSize: 14,
-      },
-    },
-  ],
+const activeGlobeLayer = computed(() =>
+  globeLayerData.value.find(
+    (layer) => layer.handle === activeGlobeLayerHandle.value
+  )
+);
+
+const moonLayerData = ref([
+  {
+    label: "Normal Moons",
+    handle: MOON_LAYERS.NORMAL,
+    data: [
+      { ...Object.assign(MOONS.ALBAREL, { filePath: "albarel.jpg" }) },
+      { ...Object.assign(MOONS.REZAREL, { filePath: "rezarel.jpg" }) },
+    ],
+  },
+  {
+    label: "Dark Moons",
+    handle: MOON_LAYERS.DARK,
+    data: [
+      { ...Object.assign(MOONS.ALBAREL, { filePath: "albarel-dark.jpg" }) },
+      { ...Object.assign(MOONS.REZAREL, { filePath: "rezarel-dark.jpg" }) },
+    ],
+  },
+]);
+
+const activeMoonLayer = computed(() =>
+  moonLayerData.value.find(
+    (layer) => layer.handle === activeMoonLayerHandle.value
+  )
+);
+
+const setGlobeLayer = () => {
+  Auberean.value.globeImageUrl(
+    getFullUrl(`/auberean-globe/${activeGlobeLayer.value.filePath}`)
+  );
+  Auberean.value.atmosphereAltitude(activeGlobeLayer.value.atmoAlt);
 };
+
+watch(activeGlobeLayerHandle, (newVal) => {
+  setGlobeLayer();
+});
+
+watch(activeMoonLayerHandle, (newVal) => {
+  drawMoons();
+});
 
 const toggleRotation = () => {
   isRotating.value = !isRotating.value;
   Auberean.value.controls().autoRotate = isRotating.value;
 };
 
-const showLabels = ref(true);
-
 const drawLabels = () => {
   Auberean.value
-    .htmlElementsData(labelsData.features)
+    .htmlElementsData(LABELS_DATA.features)
     .htmlElement((d) => {
-      const labelEl = document.createElement("div");
+      const labelEl = document.createElement("a");
       labelEl.classList.add("label");
       labelEl.style.fontSize = d.properties.labelSize + "px";
       labelEl.innerHTML = d.properties.name;
+      labelEl.onclick = () => window.open("http://www.google.com", "_blank");
       return labelEl;
     })
     .htmlLat((d) => d.geometry.coordinates[0])
     .htmlLng((d) => d.geometry.coordinates[1])
-
-    // .labelText((d) => d.properties.name)
-
     .htmlTransitionDuration(0);
 };
 
-const source = computed(() => {
-    let creditString;
-  switch (activeMap.value) {
-    case "realistic":
-        creditString = `Images: © Copyright WB Games, <a href="https://web.archive.org/web/20170224045357/http://www.imaginaryatlas.com/2013/03/29/dereth-in-context-the-world-of-asherons-call/" target="_blank">Robert Wild, Imaginary Atlas</a>`;
-        break;
-    case "globe":
-    case "map":
-      creditString = "Images: © Copyright WB Games";
-      break;
-    case "sketch":
-      creditString = `Images: © Copyright WB Games, <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Chris L'Etoile (Stormwaltz)</a>`;
-      break;
-    default:
-      creditString = null;
-      break;
-  }
+const drawMoons = () => {
+    
+    console.log('drawing moons');
 
-  return creditString;
-});
+    console.log(MOONS.ALBAREL);
+    console.log(activeMoonLayer.value);
+    
+    console.log(activeMoonLayer.value.data);
+    Auberean.value
+    .customLayerData(null)
+
+  Auberean.value
+    .customLayerData(activeMoonLayer.value.data)
+    .customThreeObject(
+      (d) =>
+        new THREE.Mesh(
+          new THREE.SphereGeometry(d.radius),
+          new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load(
+              getFullUrl(`/auberean-globe/${d.filePath}`)
+            ),
+          })
+        )
+    )
+    .customThreeObjectUpdate((obj, d) => {
+      Object.assign(
+        obj.position,
+        Auberean.value.getCoords(d.lat, d.lng, d.alt)
+      );
+
+      obj.lookAt(0, 0, 0);
+      //    obj.rotateZ(2);
+    });
+
+
+};
 
 watch(showLabels, (newVal) => {
   if (newVal) {
@@ -222,75 +247,10 @@ const toggleLabels = () => {
   showLabels.value = !showLabels.value;
 };
 
-const onChangeMap = (mapType) => {
-  activeMap.value = mapType;
-
-  switch (mapType) {
-    case "realistic":
-      Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/auberean-realistic.jpg?v=4")
-      );
-      Auberean.value.atmosphereAltitude(0.18);
-
-      break;
-    case "globe":
-      Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/aub-globe-test.jpg?v=3")
-      );
-      Auberean.value.atmosphereAltitude(0);
-      break;
-    case "map":
-      Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/auberean-map.jpg?v=3")
-      );
-      Auberean.value.atmosphereAltitude(0);
-      break;
-    case "sketch":
-      Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/auberean-sketch.jpg?v=3")
-      );
-      Auberean.value.atmosphereAltitude(0);
-      //   showLabels.value = false;
-      break;
-  }
-};
-
 onMounted(() => {
+  // Init globe
   Auberean.value = Globe({ animateIn: false });
-
-  const moon1Texture = new THREE.TextureLoader().load(
-    getFullUrl("/auberean-globe/albarel-rect.jpg?v=2")
-  );
-  const moon2Texture = new THREE.TextureLoader().load(
-    getFullUrl("/auberean-globe/rezarel-rect.jpg?v=2")
-  );
-
-  const moon1 = {
-    lat: 0,
-    lng: 200,
-    alt: 2.68,
-    radius: 29.1,
-    color: "orange",
-    orbitSpeed: 0.2,
-    texture: moon1Texture,
-  };
-  const moon2 = {
-    lat: 0,
-    lng: 180,
-    alt: 1.836,
-    radius: 21,
-    color: "red",
-    orbitSpeed: 1,
-    texture: moon2Texture,
-  };
-  const N = 2;
-
-  const gData = [moon1, moon2];
-
-  console.log(aubereanRegions);
-  Auberean.value(globeEl.value).globeImageUrl(
-    getFullUrl("/auberean-globe/auberean-realistic.jpg?v=4")
-  );
+  Auberean.value(globeEl.value);
 
   Auberean.value.backgroundImageUrl(
     "//unpkg.com/three-globe/example/img/night-sky.png"
@@ -300,73 +260,23 @@ onMounted(() => {
   //     getFullUrl("/auberean.png")
   //   );
 
-  console.log(Auberean.value);
-  Auberean.value
-    .customLayerData(gData)
-    .customThreeObject(
-      (d) =>
-        new THREE.Mesh(
-          new THREE.SphereGeometry(d.radius),
-          new THREE.MeshBasicMaterial({ map: d.texture })
-          //   new THREE.MeshLambertMaterial({ color: d.color }),
-        )
-    )
-    .customThreeObjectUpdate((obj, d) => {
-      // console.log(obj);
-      Object.assign(
-        obj.position,
-        Auberean.value.getCoords(d.lat, d.lng, d.alt)
-      );
-      
+  setGlobeLayer();
+  drawLabels();
+  drawMoons();
 
-     
-
-        obj.lookAt(0, 0, 0);
-//    obj.rotateZ(2);
-          
-
-      //obj.rotation.set(new THREE.Vector3( 0, 0, Math.PI / 2));
-    });
-
-  Auberean.value.atmosphereAltitude(0.18);
-
-  Auberean.value.controls().autoRotate = true;
+  Auberean.value.controls().autoRotate = isRotating.value;
   Auberean.value.controls().autoRotateSpeed = 1.5;
 
-  drawLabels();
-  (function moveSpheres() {
-    gData.forEach((d) => {
+    (function moveSpheres() {
+    activeMoonLayer.value.data.forEach((d) => {
       d.lng += d.orbitSpeed;
       // clouds.rotation.y += (CLOUDS_ROTATION_SPEED * Math.PI) / 180;
     });
-
-    
 
     Auberean.value.customLayerData(Auberean.value.customLayerData());
     requestAnimationFrame(moveSpheres);
   })();
 
-    console.log('globe radius');
-    console.log(Auberean.value.getGlobeRadius());
-  //   const globeMaterial = Auberean.globeMaterial();
-  //   globeMaterial.bumpScale = 20;
-  //   new THREE.TextureLoader().load(
-  //     getFullUrl("/auberean-globe/auberean-water.png"),
-  //     (texture) => {
-  //       globeMaterial.specularMap = texture;
-  //       globeMaterial.specular = new THREE.Color("grey");
-  //       globeMaterial.shininess = 15;
-  //     }
-  //   );
-
-  //   setTimeout(() => {
-  //     // wait for scene to be populated (asynchronously)
-  //     const directionalLight = Auberean.scene().children.find(
-  //       (obj3d) => obj3d.type === "DirectionalLight"
-  //     );
-  //     directionalLight && directionalLight.position.set(1, 1, 1); // change light position to see the specularMap's effect
-  //   });
-  //Auberean.polygonsData(aubereanRegions.features);
 });
 </script>
 
@@ -374,44 +284,6 @@ onMounted(() => {
 #globe {
   min-height: 1vh;
 }
-
-#controls {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  z-index: 5000;
-  width: 200px;
-  background: #000;
-
-  border: 1px solid #444;
-  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.6);
-  border-radius: 10px;
-}
-#controls button {
-  display: block;
-  width: 100%;
-  margin-bottom: 8px;
-  font-size: 15px;
-  font-weight: bold;
-  padding: 6px 10px;
-}
-
-#controls button:last-child {
-  margin-bottom: 0;
-}
-
-#controls button.active {
-  background: #797979;
-  color: #fff;
-}
-
-#controls .group {
-  padding: 12px;
-}
-#controls .group:first-child {
-  border-bottom: 1px solid #444;
-}
-
 #header {
   position: absolute;
   top: 30px;
@@ -487,5 +359,96 @@ onMounted(() => {
 :deep(.source a) {
   color: #fff;
   text-decoration: none;
+}
+
+#controls {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#controls {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  z-index: 5000;
+  width: 200px;
+  background: #000;
+
+  /* border: 1px solid #444;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.6);
+  border-radius: 10px; */
+}
+#controls button {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 10px;
+}
+
+#controls button:last-child {
+  margin-bottom: 0;
+}
+
+#controls button.active {
+  background: #797979;
+  color: #fff;
+}
+
+#controls .group {
+  margin-bottom: 12px;
+}
+#controls .group:first-child {
+  border-bottom: 1px solid #444;
+}
+
+#controls .group:last-child {
+  margin: 0;
+}
+
+.group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.group ul li {
+  border: 1px solid #bea86a;
+  border-bottom-width: 0;
+}
+
+.group ul li a {
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  background: #540c06;
+  text-decoration: none;
+  transition: background-color 0.1s linear;
+}
+
+.group ul li a:hover {
+  background-color: #73150e;
+}
+
+.group ul li.active a {
+  background: #021097;
+}
+
+.group ul li:last-child {
+  border-bottom-width: 1px;
+}
+
+.group h3 {
+  color: #fff;
+  margin: 0;
+  padding: 0 0 6px 0;
+
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05rem;
 }
 </style>
