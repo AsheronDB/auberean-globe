@@ -3,7 +3,8 @@
     <div id="header">
       <h1>Auberean</h1>
       <p>
-        <span class="albarel">Alb'arel,</span> <span class="rezarel">Rez'arel</span>
+        <span class="albarel">Alb'arel,</span>
+        <span class="rezarel">Rez'arel</span>
       </p>
     </div>
     <div id="globe" ref="globeEl"></div>
@@ -39,8 +40,12 @@
         </button>
       </div>
       <div class="group">
+        <button type="button" @click="toggleLabels">
+          <span v-if="showLabels">Hide</span><span v-else>Show</span> Labels
+        </button>
         <button type="button" @click="toggleRotation">
-          <span v-if="isRotating">Stop</span><span v-else>Start</span> Rotation
+          <span v-if="isRotating">Pause</span><span v-else>Start</span> Camera
+          Spin
         </button>
       </div>
     </div>
@@ -48,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import Globe from "globe.gl";
 import * as THREE from "three";
 import aubereanRegions from "@/assets/data/auberean-regions.geo";
@@ -63,9 +68,134 @@ function getFullUrl(relativeUrl) {
 
 const Auberean = ref();
 
+const labelsData = {
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [42, -145],
+      },
+      properties: {
+        name: "Dericost",
+        labelSize: 4,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [46.5, -55.5],
+      },
+      properties: {
+        name: "Dereth",
+        labelSize: 2,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [12, 45],
+      },
+      properties: {
+        name: "Haebrous",
+        labelSize: 4,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [75, 22],
+      },
+      properties: {
+        name: "Ruschk",
+        labelSize: 3,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-25, -42],
+      },
+      properties: {
+        name: "Yalaini\nArchipelago",
+        labelSize: 3,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-49, 160],
+      },
+      properties: {
+        name: "Black Rains\nImpact Site",
+        labelSize: 2,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [16, 126],
+      },
+      properties: {
+        name: "Falatacot (?)",
+        labelSize: 2.5,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [68, -34],
+      },
+      properties: {
+        name: "Uninhabited\n(Strange Ruins)",
+        labelSize: 1.8,
+      },
+    },
+  ],
+};
+
 const toggleRotation = () => {
   isRotating.value = !isRotating.value;
   Auberean.value.controls().autoRotate = isRotating.value;
+};
+
+const showLabels = ref(true);
+
+const drawLabels = () => {
+  Auberean.value
+    .labelsData(labelsData.features)
+    .labelLat((d) => d.geometry.coordinates[0])
+    .labelLng((d) => d.geometry.coordinates[1])
+    .labelSize((d) => d.properties.labelSize)
+    .labelText((d) => d.properties.name)
+    .labelIncludeDot(false)
+    .labelsTransitionDuration(0)
+    .labelDotRadius((d) => 0)
+    .labelColor(() => "rgba(255, 255, 255, 1)")
+    .labelResolution(2);
+};
+
+watch(
+  showLabels,
+  (newVal) => {
+    if (newVal) {
+      drawLabels();
+    } else {
+      console.log("hide labels");
+      Auberean.value.labelsData(null);
+    }
+  }
+);
+
+const toggleLabels = () => {
+  showLabels.value = !showLabels.value;
 };
 
 const onChangeMap = (mapType) => {
@@ -139,6 +269,7 @@ onMounted(() => {
   //     getFullUrl("/auberean.png")
   //   );
 
+  console.log(Auberean.value);
   Auberean.value
     .customLayerData(gData)
     .customThreeObject(
@@ -150,13 +281,13 @@ onMounted(() => {
         )
     )
     .customThreeObjectUpdate((obj, d) => {
-       // console.log(obj);
+      // console.log(obj);
       Object.assign(
         obj.position,
-        Auberean.value.getCoords(d.lat, d.lng, d.alt),
+        Auberean.value.getCoords(d.lat, d.lng, d.alt)
       );
 
-      obj.rotateY( d.orbitSpeed / 55 );
+      obj.rotateY(d.orbitSpeed / 55);
 
       //obj.rotation.set(new THREE.Vector3( 0, 0, Math.PI / 2));
     });
@@ -166,8 +297,13 @@ onMounted(() => {
   Auberean.value.controls().autoRotate = true;
   Auberean.value.controls().autoRotateSpeed = 1.5;
 
+    drawLabels();
   (function moveSpheres() {
-    gData.forEach((d) => (d.lng += d.orbitSpeed));
+    gData.forEach((d) => {
+      d.lng += d.orbitSpeed;
+      // clouds.rotation.y += (CLOUDS_ROTATION_SPEED * Math.PI) / 180;
+    });
+
     Auberean.value.customLayerData(Auberean.value.customLayerData());
     requestAnimationFrame(moveSpheres);
   })();
@@ -230,10 +366,10 @@ onMounted(() => {
 }
 
 #controls .group {
-      padding: 12px;
+  padding: 12px;
 }
 #controls .group:first-child {
-    border-bottom: 1px solid #444;
+  border-bottom: 1px solid #444;
 }
 
 #header {
