@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div id="header"><h1>Auberean</h1><p><span class="albarel">Alb'arel,</span> <span class="rezarel">Rez'arel</span></p></div>
     <div id="globe" ref="globeEl"></div>
     <div id="controls">
       <button
@@ -191,7 +192,7 @@ onMounted(() => {
   z-index: 5000;
   width: 200px;
   background: #000;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid #444;
   box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
@@ -200,7 +201,8 @@ onMounted(() => {
   display: block;
   width: 100%;
   margin-bottom: 8px;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: bold;
   padding: 6px 10px;
 }
 
@@ -209,7 +211,48 @@ onMounted(() => {
 }
 
 #controls button.active {
-    background: #797979;
+  background: #797979;
+  color: #fff;
+}
+
+#header {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 5000;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+     line-height: 1;
+    font-family: "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif", "Times","Source Serif Pro", serif;
+}
+
+#header h1 {
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  font-size: 42px;
+
+  margin: 0 0 4px 0;
+   padding: 0; 
+  
+
+}
+
+#header p {
     color: #fff;
+    opacity: 0.75;
+    font-size:21px;
+    font-style: italic;
+    margin: 0;
+    padding: 0;
+}
+
+.albarel {
+    color: #e2cc81;
+    /* font-size: 42px;
+    vertical-align: middle; */
+}
+
+.rezarel {
+    color: #ff9966;
 }
 </style>
