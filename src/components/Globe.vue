@@ -193,14 +193,14 @@ const source = computed(() => {
     let creditString;
   switch (activeMap.value) {
     case "realistic":
-        creditString = `Images: <a href="https://web.archive.org/web/20170224045357/http://www.imaginaryatlas.com/2013/03/29/dereth-in-context-the-world-of-asherons-call/" target="_blank">Robert Wild, Imaginary Atlas</a>`;
+        creditString = `Images: © Copyright WB Games, <a href="https://web.archive.org/web/20170224045357/http://www.imaginaryatlas.com/2013/03/29/dereth-in-context-the-world-of-asherons-call/" target="_blank">Robert Wild, Imaginary Atlas</a>`;
         break;
     case "globe":
     case "map":
-      creditString = "Images: © Copyright WB Games. Used for educational purposes.";
+      creditString = "Images: © Copyright WB Games.";
       break;
     case "sketch":
-      creditString = `Images: <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Asheron's Call Wiki, Chris L'Etoile (Stormwaltz)</a>`;
+      creditString = `Images: © Copyright WB Games, <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Asheron's Call Wiki, Chris L'Etoile (Stormwaltz)</a>`;
       break;
     default:
       creditString = null;
