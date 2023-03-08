@@ -1,8 +1,7 @@
 <template>
   <div>
     <div id="header">
-
-        <!-- <div class="tree">
+      <!-- <div class="tree">
 
             <ul> -->
       <h1>Auberean</h1>
@@ -40,16 +39,7 @@
             }}</a>
           </li>
         </ul>
-
-        <!-- <button type="button" @click="toggleLabels">
-          <span v-if="showLabels">Hide</span><span v-else>Show</span> Labels
-        </button>
-        <button type="button" @click="toggleRotation">
-          <span v-if="isRotating">Pause</span><span v-else>Start</span> Camera
-          Spin
-        </button> -->
       </div>
-
       <div class="group">
         <ul>
           <li>
@@ -65,14 +55,6 @@
             >
           </li>
         </ul>
-
-        <!-- <button type="button" @click="toggleLabels">
-          <span v-if="showLabels">Hide</span><span v-else>Show</span> Labels
-        </button>
-        <button type="button" @click="toggleRotation">
-          <span v-if="isRotating">Pause</span><span v-else>Start</span> Camera
-          Spin
-        </button> -->
       </div>
     </div>
     <div class="source" v-if="activeGlobeLayer">
@@ -109,7 +91,7 @@ const globeLayerData = ref([
     handle: GLOBE_LAYERS.REALISTIC,
     filePath: "auberean-realistic.jpg?v=" + (+new Date()).toString(36),
     atmoAlt: 0.18,
-    source: `© Copyright WB Games, <a href="https://web.archive.org/web/20170224045357/http://www.imaginaryatlas.com/2013/03/29/dereth-in-context-the-world-of-asherons-call/" target="_blank">Robert Wild, Imaginary Atlas</a>`,
+    source: `© Copyright WB Games, <a href="https://web.archive.org/web/20170224045357/http://www.imaginaryatlas.com/2013/03/29/dereth-in-context-the-world-of-asherons-call/" target="_blank">Robert Wild/Imaginary Atlas</a>`,
   },
   {
     label: "Globe of Auberean",
@@ -167,7 +149,7 @@ const activeMoonLayer = computed(() =>
 
 const setGlobeLayer = () => {
   Auberean.value.globeImageUrl(
-    getFullUrl(`/auberean-globe/${activeGlobeLayer.value.filePath}`)
+    getFullUrl(`/auberean-globe/img/${activeGlobeLayer.value.filePath}`)
   );
   Auberean.value.atmosphereAltitude(activeGlobeLayer.value.atmoAlt);
 };
@@ -194,7 +176,9 @@ const drawLabels = () => {
       el.style.fontSize = d.properties.labelSize + "px";
       el.innerHTML = d.properties.name;
       if (d.properties.fontStyle) el.style.fontStyle = d.properties.fontStyle;
-      el.onclick = () => window.open("http://www.google.com", "_blank");
+      el.style["pointer-events"] = "auto";
+      el.style.cursor = "pointer";
+      el.onclick = () => window.open(d.properties.url, "_blank");
       return el;
     })
     .htmlLat((d) => d.geometry.coordinates[0])
@@ -203,15 +187,13 @@ const drawLabels = () => {
 };
 
 const drawMoons = () => {
-    
-    console.log('drawing moons');
+  console.log("drawing moons");
 
-    console.log(MOONS.ALBAREL);
-    console.log(activeMoonLayer.value);
-    
-    console.log(activeMoonLayer.value.data);
-    Auberean.value
-    .customLayerData(null)
+  console.log(MOONS.ALBAREL);
+  console.log(activeMoonLayer.value);
+
+  console.log(activeMoonLayer.value.data);
+  Auberean.value.customLayerData(null);
 
   Auberean.value
     .customLayerData(activeMoonLayer.value.data)
@@ -221,7 +203,7 @@ const drawMoons = () => {
           new THREE.SphereGeometry(d.radius),
           new THREE.MeshBasicMaterial({
             map: new THREE.TextureLoader().load(
-              getFullUrl(`/auberean-globe/${d.filePath}`)
+              getFullUrl(`/auberean-globe/img/${d.filePath}`)
             ),
           })
         )
@@ -235,8 +217,6 @@ const drawMoons = () => {
       obj.lookAt(0, 0, 0);
       //    obj.rotateZ(2);
     });
-
-
 };
 
 watch(showLabels, (newVal) => {
@@ -258,7 +238,7 @@ onMounted(() => {
   Auberean.value(globeEl.value);
 
   Auberean.value.backgroundImageUrl(
-    "//unpkg.com/three-globe/example/img/night-sky.png"
+    getFullUrl(`/auberean-globe/img/night-sky.png`)
   );
 
   //   Auberean.bumpImageUrl(
@@ -272,7 +252,7 @@ onMounted(() => {
   Auberean.value.controls().autoRotate = isRotating.value;
   Auberean.value.controls().autoRotateSpeed = 1.5;
 
-    (function moveSpheres() {
+  (function moveSpheres() {
     activeMoonLayer.value.data.forEach((d) => {
       d.lng += d.orbitSpeed;
       // clouds.rotation.y += (CLOUDS_ROTATION_SPEED * Math.PI) / 180;
@@ -281,7 +261,6 @@ onMounted(() => {
     Auberean.value.customLayerData(Auberean.value.customLayerData());
     requestAnimationFrame(moveSpheres);
   })();
-
 });
 </script>
 
@@ -340,6 +319,11 @@ onMounted(() => {
   color: #fff !important;
   text-align: center;
   display: block;
+  transition: color 0.05s linear;
+}
+
+:deep(.label:hover) {
+    color: #e5b700 !important;
 }
 
 .source {
