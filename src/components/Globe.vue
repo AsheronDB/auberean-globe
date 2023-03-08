@@ -78,7 +78,7 @@ const labelsData = {
       },
       properties: {
         name: "Dericost",
-        labelSize: 4,
+        labelSize: 26,
       },
     },
     {
@@ -89,7 +89,7 @@ const labelsData = {
       },
       properties: {
         name: "Dereth",
-        labelSize: 2,
+        labelSize: 16,
       },
     },
     {
@@ -100,7 +100,7 @@ const labelsData = {
       },
       properties: {
         name: "Haebrous",
-        labelSize: 4,
+        labelSize: 26,
       },
     },
     {
@@ -111,18 +111,18 @@ const labelsData = {
       },
       properties: {
         name: "Ruschk",
-        labelSize: 3,
+        labelSize: 18,
       },
     },
     {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [-26.5, -42],
+        coordinates: [-30, -42],
       },
       properties: {
-        name: "Yalaini\nArchipelago",
-        labelSize: 3,
+        name: "Yalaini<br />Archipelago",
+        labelSize: 24,
       },
     },
     {
@@ -132,8 +132,8 @@ const labelsData = {
         coordinates: [-50, 160],
       },
       properties: {
-        name: "Black Rains\nImpact Site",
-        labelSize: 2,
+        name: "Black Rains<br />Impact Site",
+        labelSize: 16,
       },
     },
     {
@@ -144,7 +144,7 @@ const labelsData = {
       },
       properties: {
         name: "Falatacot (?)",
-        labelSize: 2.5,
+        labelSize: 21,
       },
     },
     {
@@ -154,8 +154,8 @@ const labelsData = {
         coordinates: [68, -34],
       },
       properties: {
-        name: "Uninhabited\n(Strange Ruins)",
-        labelSize: 1.8,
+        name: "Uninhabited<br />(Strange Ruins)",
+        labelSize: 14,
       },
     },
   ],
@@ -169,29 +169,32 @@ const toggleRotation = () => {
 const showLabels = ref(true);
 
 const drawLabels = () => {
+
   Auberean.value
-    .labelsData(labelsData.features)
-    .labelLat((d) => d.geometry.coordinates[0])
-    .labelLng((d) => d.geometry.coordinates[1])
-    .labelSize((d) => d.properties.labelSize)
-    .labelText((d) => d.properties.name)
-    .labelIncludeDot(false)
-    .labelsTransitionDuration(0)
-    .labelColor(() => "rgba(255, 255, 255, 1)")
-    .labelResolution(2);
+    .htmlElementsData(labelsData.features)
+    .htmlElement((d) => {
+      const labelEl = document.createElement("div");
+      labelEl.classList.add("label");
+      labelEl.style.fontSize = d.properties.labelSize + 'px';
+      labelEl.innerHTML = d.properties.name;
+      return labelEl;
+    })
+    .htmlLat((d) => d.geometry.coordinates[0])
+    .htmlLng((d) => d.geometry.coordinates[1])
+
+    // .labelText((d) => d.properties.name)
+
+    .htmlTransitionDuration(0);
 };
 
-watch(
-  showLabels,
-  (newVal) => {
-    if (newVal) {
-      drawLabels();
-    } else {
-      console.log("hide labels");
-      Auberean.value.labelsData(null);
-    }
+watch(showLabels, (newVal) => {
+  if (newVal) {
+    drawLabels();
+  } else {
+    console.log("hide labels");
+    Auberean.value.htmlElementsData([]);
   }
-);
+});
 
 const toggleLabels = () => {
   showLabels.value = !showLabels.value;
@@ -296,7 +299,7 @@ onMounted(() => {
   Auberean.value.controls().autoRotate = true;
   Auberean.value.controls().autoRotateSpeed = 1.5;
 
-    drawLabels();
+  drawLabels();
   (function moveSpheres() {
     gData.forEach((d) => {
       d.lng += d.orbitSpeed;
@@ -409,5 +412,14 @@ onMounted(() => {
 
 .rezarel {
   color: #ff9966;
+}
+
+:deep(.label) {
+  text-shadow: 0 0 10px rgba(0, 0, 0, 1)  !important;
+  font-family: "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif",
+    "Times", "Source Serif Pro", serif  !important;
+  color: #fff !important;
+  text-align: center;
+  display: block;
 }
 </style>
