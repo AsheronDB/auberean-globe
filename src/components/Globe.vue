@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="source" v-if="activeGlobeLayer">
-      <p v-html="activeGlobeLayer.source"></p>
+      <p>Images: <span v-html="activeGlobeLayer.source"></span></p>
     </div>
   </div>
 </template>
@@ -372,7 +372,6 @@ onMounted(() => {
   left: 15px;
   z-index: 5000;
   width: 200px;
-  background: #000;
 
   /* border: 1px solid #444;
   box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.6);
