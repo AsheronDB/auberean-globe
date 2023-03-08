@@ -262,7 +262,7 @@ onMounted(() => {
   const moon1 = {
     lat: 0,
     lng: 200,
-    alt: 1.5,
+    alt: 2,
     radius: 20,
     color: "orange",
     orbitSpeed: 0.2,
@@ -271,7 +271,7 @@ onMounted(() => {
   const moon2 = {
     lat: 0,
     lng: 180,
-    alt: 1.02,
+    alt: 1.38,
     radius: 17,
     color: "red",
     orbitSpeed: 1,
@@ -301,7 +301,7 @@ onMounted(() => {
       (d) =>
         new THREE.Mesh(
           new THREE.SphereGeometry(d.radius),
-          new THREE.MeshBasicMaterial({ map: d.texture, overdraw: 0.5 })
+          new THREE.MeshBasicMaterial({ map: d.texture })
           //   new THREE.MeshLambertMaterial({ color: d.color }),
         )
     )
@@ -312,7 +312,9 @@ onMounted(() => {
         Auberean.value.getCoords(d.lat, d.lng, d.alt)
       );
 
-      obj.rotateY(d.orbitSpeed / 55);
+        obj.lookAt(0, 0, 0);
+
+      //obj.rotateY(d.orbitSpeed / 55);
 
       //obj.rotation.set(new THREE.Vector3( 0, 0, Math.PI / 2));
     });
@@ -328,6 +330,8 @@ onMounted(() => {
       d.lng += d.orbitSpeed;
       // clouds.rotation.y += (CLOUDS_ROTATION_SPEED * Math.PI) / 180;
     });
+
+    
 
     Auberean.value.customLayerData(Auberean.value.customLayerData());
     requestAnimationFrame(moveSpheres);
