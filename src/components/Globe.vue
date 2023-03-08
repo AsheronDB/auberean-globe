@@ -253,10 +253,10 @@ onMounted(() => {
   Auberean.value = Globe({ animateIn: false });
 
   const moon1Texture = new THREE.TextureLoader().load(
-    getFullUrl("/auberean-globe/albarel-rect.jpg")
+    getFullUrl("/auberean-globe/albarel-rect.jpg?v=2")
   );
   const moon2Texture = new THREE.TextureLoader().load(
-    getFullUrl("/auberean-globe/rezarel-rect.jpg")
+    getFullUrl("/auberean-globe/rezarel-rect.jpg?v=2")
   );
 
   const moon1 = {
