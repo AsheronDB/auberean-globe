@@ -87,7 +87,7 @@ const labelsData = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [45, -55.5],
+        coordinates: [46.5, -52.4],
       },
       properties: {
         name: "Dereth",
@@ -228,7 +228,7 @@ const onChangeMap = (mapType) => {
   switch (mapType) {
     case "realistic":
       Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/auberean-upscale.jpg?v=3")
+        getFullUrl("/auberean-globe/auberean-realistic.jpg?v=4")
       );
       Auberean.value.atmosphereAltitude(0.18);
 
@@ -289,7 +289,7 @@ onMounted(() => {
 
   console.log(aubereanRegions);
   Auberean.value(globeEl.value).globeImageUrl(
-    getFullUrl("/auberean-globe/auberean-upscale.jpg?v=3")
+    getFullUrl("/auberean-globe/auberean-realistic.jpg?v=4")
   );
 
   Auberean.value.backgroundImageUrl(
@@ -317,10 +317,13 @@ onMounted(() => {
         obj.position,
         Auberean.value.getCoords(d.lat, d.lng, d.alt)
       );
+      
+
+     
 
         obj.lookAt(0, 0, 0);
-
-      //obj.rotateY(d.orbitSpeed / 55);
+//    obj.rotateZ(2);
+          
 
       //obj.rotation.set(new THREE.Vector3( 0, 0, Math.PI / 2));
     });
