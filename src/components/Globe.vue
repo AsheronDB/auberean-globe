@@ -3,7 +3,8 @@
     <div id="header">
       <h1>Auberean</h1>
       <p>
-        <span class="albarel">Alb'arel,</span> <span class="rezarel">Rez'arel</span>
+        <span class="albarel">Alb'arel,</span>
+        <span class="rezarel">Rez'arel</span>
       </p>
     </div>
     <div id="globe" ref="globeEl"></div>
@@ -48,7 +49,7 @@
         </button>
       </div>
     </div>
-    <div class="source"  v-if="source">
+    <div class="source" v-if="source">
       <p v-html="source"></p>
     </div>
   </div>
@@ -192,6 +193,8 @@ const source = computed(() => {
     let creditString;
   switch (activeMap.value) {
     case "realistic":
+        creditString = `Images: <a href="https://web.archive.org/web/20170224045357/http://www.imaginaryatlas.com/2013/03/29/dereth-in-context-the-world-of-asherons-call/" target="_blank">Robert Wild, Imaginary Atlas</a>`;
+        break;
     case "globe":
     case "map":
       creditString = "Images: © Copyright WB Games. Used for educational purposes.";
@@ -335,7 +338,7 @@ onMounted(() => {
       // clouds.rotation.y += (CLOUDS_ROTATION_SPEED * Math.PI) / 180;
     });
 
-    
+
 
     Auberean.value.customLayerData(Auberean.value.customLayerData());
     requestAnimationFrame(moveSpheres);
@@ -459,20 +462,26 @@ onMounted(() => {
 }
 
 .source {
-    position: absolute;
-    bottom: 12px; right: 12px;
-    color: #fff;
-    z-index: 5000;
-    opacity: .35;
-    font-size: 13px;
-    font-weight: bold;
-text-shadow: 0 0 15px #000;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  color: #fff;
+  z-index: 5000;
+  opacity: 0.35;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 0 0 15px #000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-.source p { margin: 0; padding: 0; }
+.source p {
+  margin: 0;
+  padding: 0;
+}
 
 :deep(.source a) {
-    color: #fff; text-decoration: none;
+  color: #fff;
+  text-decoration: none;
 }
 </style>
