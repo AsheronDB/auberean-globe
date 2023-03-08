@@ -1,39 +1,49 @@
 <template>
   <div>
-    <div id="header"><h1>Auberean</h1><p><span class="albarel">Alb'arel,</span> <span class="rezarel">Rez'arel</span></p></div>
+    <div id="header">
+      <h1>Auberean</h1>
+      <p>
+        <span class="albarel">Alb'arel,</span>
+        <span class="rezarel">Rez'arel</span>
+      </p>
+    </div>
     <div id="globe" ref="globeEl"></div>
     <div id="controls">
-      <button
-        type="button"
-        @click="onChangeMap('realistic')"
-        :class="{ active: activeMap == 'realistic' }"
-      >
-        Realistic
-      </button>
-      <button
-        type="button"
-        @click="onChangeMap('globe')"
-        :class="{ active: activeMap == 'globe' }"
-      >
-        Globe of Auberean
-      </button>
-      <button
-        type="button"
-        @click="onChangeMap('map')"
-        :class="{ active: activeMap == 'map' }"
-      >
-        Map of Auberean
-      </button>
-      <button
-        type="button"
-        @click="onChangeMap('sketch')"
-        :class="{ active: activeMap == 'sketch' }"
-      >
-        Early Sketch
-      </button>
-      <button type="button" @click="toggleRotation">
-        <span v-if="isRotating">Stop</span><span v-else>Start</span> Rotation
-      </button>
+      <div class="group">
+        <button
+          type="button"
+          @click="onChangeMap('realistic')"
+          :class="{ active: activeMap == 'realistic' }"
+        >
+          Realistic
+        </button>
+        <button
+          type="button"
+          @click="onChangeMap('globe')"
+          :class="{ active: activeMap == 'globe' }"
+        >
+          Globe of Auberean
+        </button>
+        <button
+          type="button"
+          @click="onChangeMap('map')"
+          :class="{ active: activeMap == 'map' }"
+        >
+          Map of Auberean
+        </button>
+        <button
+          type="button"
+          @click="onChangeMap('sketch')"
+          :class="{ active: activeMap == 'sketch' }"
+        >
+          Early Sketch
+        </button>
+      </div>
+      <div class="group">
+        <button type="button" @click="toggleRotation">
+          <span v-if="isRotating">Stop</span><span v-else>Start</span> Rotation
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -192,7 +202,7 @@ onMounted(() => {
   z-index: 5000;
   width: 200px;
   background: #000;
-  padding: 12px;
+
   border: 1px solid #444;
   box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
@@ -215,14 +225,22 @@ onMounted(() => {
   color: #fff;
 }
 
+#controls .group {
+      padding: 12px;
+}
+#controls .group:first-child {
+    border-bottom: 1px solid #444;
+}
+
 #header {
   position: absolute;
   top: 30px;
   left: 30px;
   z-index: 5000;
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-     line-height: 1;
-    font-family: "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif", "Times","Source Serif Pro", serif;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  line-height: 1;
+  font-family: "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif",
+    "Times", "Source Serif Pro", serif;
 }
 
 #header h1 {
@@ -232,27 +250,25 @@ onMounted(() => {
   font-size: 42px;
 
   margin: 0 0 4px 0;
-   padding: 0; 
-  
-
+  padding: 0;
 }
 
 #header p {
-    color: #fff;
-    opacity: 0.75;
-    font-size:21px;
-    font-style: italic;
-    margin: 0;
-    padding: 0;
+  color: #fff;
+  opacity: 0.75;
+  font-size: 21px;
+  font-style: italic;
+  margin: 0;
+  padding: 0;
 }
 
 .albarel {
-    color: #e2cc81;
-    /* font-size: 42px;
+  color: #e2cc81;
+  /* font-size: 42px;
     vertical-align: middle; */
 }
 
 .rezarel {
-    color: #ff9966;
+  color: #ff9966;
 }
 </style>
