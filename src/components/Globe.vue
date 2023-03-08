@@ -174,6 +174,26 @@ const setGlobeLayer = () => {
     getFullUrl(`/auberean-globe/img/${activeGlobeLayer.value.filePath}`)
   );
   Auberean.value.atmosphereAltitude(activeGlobeLayer.value.atmoAlt);
+
+  if (activeGlobeLayer.value.handle == GLOBE_LAYERS.REALISTIC) {
+
+    const globeMaterial = Auberean.value.globeMaterial();
+
+    globeMaterial.bumpScale = 10;
+
+    new THREE.TextureLoader().load(
+      getFullUrl(`/auberean-globe/img/auberean-water.jpg`),
+      (texture) => {
+        globeMaterial.specularMap = texture;
+        globeMaterial.specular = new THREE.Color("grey");
+        globeMaterial.shininess = 15;
+      }
+    );
+  } else {
+    const globeMaterial = Auberean.value.globeMaterial();
+    globeMaterial.specularMap = null;
+    globeMaterial.shininess = 0;
+  }
 };
 
 watch(activeGlobeLayerHandle, (newVal) => {
@@ -261,16 +281,25 @@ onMounted(() => {
     getFullUrl(`/auberean-globe/img/night-sky.png`)
   );
 
-  //   Auberean.bumpImageUrl(
-  //     getFullUrl("/auberean.png")
+  //   Auberean.value.bumpImageUrl(
+  //     getFullUrl(`/auberean-globe/img/auberean-water.jpg`)
   //   );
 
   setGlobeLayer();
+
   drawLabels();
   drawMoons();
 
   Auberean.value.controls().autoRotate = isRotating.value;
   Auberean.value.controls().autoRotateSpeed = 1.5;
+
+  setTimeout(() => {
+    // wait for scene to be populated (asynchronously)
+    const directionalLight = Auberean.value
+      .scene()
+      .children.find((obj3d) => obj3d.type === "DirectionalLight");
+    directionalLight && directionalLight.position.set(1, 1, 1); // change light position to see the specularMap's effect
+  });
 
   (function moveSpheres() {
     activeMoonLayer.value.data.forEach((d) => {
