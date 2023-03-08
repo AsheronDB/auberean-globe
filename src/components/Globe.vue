@@ -150,10 +150,15 @@ onMounted(() => {
         )
     )
     .customThreeObjectUpdate((obj, d) => {
+       // console.log(obj);
       Object.assign(
         obj.position,
-        Auberean.value.getCoords(d.lat, d.lng, d.alt)
+        Auberean.value.getCoords(d.lat, d.lng, d.alt),
       );
+
+      obj.rotateY( d.orbitSpeed / 55 );
+
+      //obj.rotation.set(new THREE.Vector3( 0, 0, Math.PI / 2));
     });
 
   Auberean.value.atmosphereAltitude(0.18);
