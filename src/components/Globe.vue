@@ -197,10 +197,10 @@ const source = computed(() => {
         break;
     case "globe":
     case "map":
-      creditString = "Images: © Copyright WB Games.";
+      creditString = "Images: © Copyright WB Games";
       break;
     case "sketch":
-      creditString = `Images: © Copyright WB Games, <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Asheron's Call Wiki, Chris L'Etoile (Stormwaltz)</a>`;
+      creditString = `Images: © Copyright WB Games, <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Chris L'Etoile (Stormwaltz)</a>`;
       break;
     default:
       creditString = null;
@@ -269,8 +269,8 @@ onMounted(() => {
   const moon1 = {
     lat: 0,
     lng: 200,
-    alt: 2,
-    radius: 20,
+    alt: 2.68,
+    radius: 29.1,
     color: "orange",
     orbitSpeed: 0.2,
     texture: moon1Texture,
@@ -278,8 +278,8 @@ onMounted(() => {
   const moon2 = {
     lat: 0,
     lng: 180,
-    alt: 1.38,
-    radius: 17,
+    alt: 1.836,
+    radius: 21,
     color: "red",
     orbitSpeed: 1,
     texture: moon2Texture,
@@ -338,12 +338,14 @@ onMounted(() => {
       // clouds.rotation.y += (CLOUDS_ROTATION_SPEED * Math.PI) / 180;
     });
 
-
+    
 
     Auberean.value.customLayerData(Auberean.value.customLayerData());
     requestAnimationFrame(moveSpheres);
   })();
 
+    console.log('globe radius');
+    console.log(Auberean.value.getGlobeRadius());
   //   const globeMaterial = Auberean.globeMaterial();
   //   globeMaterial.bumpScale = 20;
   //   new THREE.TextureLoader().load(
