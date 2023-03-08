@@ -74,7 +74,7 @@ const labelsData = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [40, -145],
+        coordinates: [36, -145],
       },
       properties: {
         name: "Dericost",
@@ -154,7 +154,7 @@ const labelsData = {
         coordinates: [68, -34],
       },
       properties: {
-        name: "Uninhabited<br />(Strange Ruins)",
+        name: "Uninhabited<br /><small>(Strange Ruins)</small>",
         labelSize: 14,
       },
     },
@@ -169,13 +169,12 @@ const toggleRotation = () => {
 const showLabels = ref(true);
 
 const drawLabels = () => {
-
   Auberean.value
     .htmlElementsData(labelsData.features)
     .htmlElement((d) => {
       const labelEl = document.createElement("div");
       labelEl.classList.add("label");
-      labelEl.style.fontSize = d.properties.labelSize + 'px';
+      labelEl.style.fontSize = d.properties.labelSize + "px";
       labelEl.innerHTML = d.properties.name;
       return labelEl;
     })
@@ -201,12 +200,16 @@ const toggleLabels = () => {
 };
 
 const onChangeMap = (mapType) => {
+
+
   activeMap.value = mapType;
+
   switch (mapType) {
     case "realistic":
       Auberean.value.globeImageUrl(
         getFullUrl("/auberean-globe/auberean-upscale.jpg")
       );
+
       break;
     case "globe":
       Auberean.value.globeImageUrl(
@@ -222,6 +225,7 @@ const onChangeMap = (mapType) => {
       Auberean.value.globeImageUrl(
         getFullUrl("/auberean-globe/aub-sketch.jpg")
       );
+    //   showLabels.value = false;
       break;
   }
 };
@@ -415,9 +419,13 @@ onMounted(() => {
 }
 
 :deep(.label) {
-  text-shadow: 0 0 10px rgba(0, 0, 0, 1)  !important;
+  /* text-shadow: -1 0 1px rgba(0, 0, 0, 1), 0 0 20px rgba(0, 0, 0, 1); */
+
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000, 0 0 15px #000;
+
   font-family: "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif",
-    "Times", "Source Serif Pro", serif  !important;
+    "Times", "Source Serif Pro", serif !important;
   color: #fff !important;
   text-align: center;
   display: block;
