@@ -1,14 +1,17 @@
 <template>
   <div>
     <div id="header">
-      <!-- <div class="tree">
-
-            <ul> -->
-      <h1>Auberean</h1>
-      <p>
-        <span class="albarel">Alb'arel, </span
-        ><span class="rezarel">Rez'arel</span>
-      </p>
+      <div class="tree">
+        <ul>
+          <li>
+            <h1>Auberean</h1>
+            <ul>
+              <li class="albarel">Alb'arel</li>
+              <li class="rezarel">Rez'arel</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
     <div id="globe" ref="globeEl"></div>
     <div id="controls">
@@ -127,16 +130,40 @@ const moonLayerData = ref([
     label: "Normal Moons",
     handle: MOON_LAYERS.NORMAL,
     data: [
-      { ...Object.assign(MOONS.ALBAREL, { filePath: "albarel.jpg" }) },
-      { ...Object.assign(MOONS.REZAREL, { filePath: "rezarel.jpg" }) },
+      {
+        ...Object.assign(MOONS.ALBAREL, {
+          texture: new THREE.TextureLoader().load(
+            getFullUrl(`/auberean-globe/img/albarel.jpg`)
+          ),
+        }),
+      },
+      {
+        ...Object.assign(MOONS.REZAREL, {
+          texture: new THREE.TextureLoader().load(
+            getFullUrl(`/auberean-globe/img/rezarel.jpg`)
+          ),
+        }),
+      },
     ],
   },
   {
     label: "Dark Moons",
     handle: MOON_LAYERS.DARK,
     data: [
-      { ...Object.assign(MOONS.ALBAREL, { filePath: "albarel-dark.jpg" }) },
-      { ...Object.assign(MOONS.REZAREL, { filePath: "rezarel-dark.jpg" }) },
+      {
+        ...Object.assign(MOONS.ALBAREL, {
+          texture: new THREE.TextureLoader().load(
+            getFullUrl(`/auberean-globe/img/rezarel.jpg`)
+          ),
+        }),
+      },
+      {
+        ...Object.assign(MOONS.REZAREL, {
+          texture: new THREE.TextureLoader().load(
+            getFullUrl(`/auberean-globe/img/rezarel-dark.jpg`)
+          ),
+        }),
+      },
     ],
   },
 ]);
@@ -202,9 +229,7 @@ const drawMoons = () => {
         new THREE.Mesh(
           new THREE.SphereGeometry(d.radius),
           new THREE.MeshBasicMaterial({
-            map: new THREE.TextureLoader().load(
-              getFullUrl(`/auberean-globe/img/${d.filePath}`)
-            ),
+            map: d.texture,
           })
         )
     )
@@ -323,7 +348,7 @@ onMounted(() => {
 }
 
 :deep(.label:hover) {
-    color: #e5b700 !important;
+  color: #e5b700 !important;
 }
 
 .source {
@@ -438,5 +463,16 @@ onMounted(() => {
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 0.05rem;
+}
+
+.tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree ul li:before {
+  border-left: 2px solid red;
+  position: ;
 }
 </style>
