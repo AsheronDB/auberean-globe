@@ -2,12 +2,37 @@
   <div>
     <div id="globe" ref="globeEl"></div>
     <div id="controls">
-      <button type="button" @click="onChangeMap('realistic')">Realistic</button>
-      <button type="button" @click="onChangeMap('globe')">
+      <button
+        type="button"
+        @click="onChangeMap('realistic')"
+        :class="{ active: activeMap == 'realistic' }"
+      >
+        Realistic
+      </button>
+      <button
+        type="button"
+        @click="onChangeMap('globe')"
+        :class="{ active: activeMap == 'globe' }"
+      >
         Globe of Auberean
       </button>
-      <button type="button" @click="onChangeMap('map')">Map of Auberean</button>
-      <button type="button" @click="onChangeMap('sketch')">Early Sketch</button>
+      <button
+        type="button"
+        @click="onChangeMap('map')"
+        :class="{ active: activeMap == 'map' }"
+      >
+        Map of Auberean
+      </button>
+      <button
+        type="button"
+        @click="onChangeMap('sketch')"
+        :class="{ active: activeMap == 'sketch' }"
+      >
+        Early Sketch
+      </button>
+      <button type="button" @click="toggleRotation">
+        <span v-if="isRotating">Stop</span><span v-else>Start</span> Rotation
+      </button>
     </div>
   </div>
 </template>
@@ -19,6 +44,8 @@ import * as THREE from "three";
 import aubereanRegions from "@/assets/data/auberean-regions.geo";
 
 const globeEl = ref();
+const isRotating = ref(true);
+const activeMap = ref("realistic");
 
 function getFullUrl(relativeUrl) {
   return new URL(relativeUrl, import.meta.url).href;
@@ -26,7 +53,13 @@ function getFullUrl(relativeUrl) {
 
 const Auberean = ref();
 
+const toggleRotation = () => {
+  isRotating.value = !isRotating.value;
+  Auberean.value.controls().autoRotate = isRotating.value;
+};
+
 const onChangeMap = (mapType) => {
+  activeMap.value = mapType;
   switch (mapType) {
     case "realistic":
       Auberean.value.globeImageUrl(
@@ -62,19 +95,21 @@ onMounted(() => {
   );
 
   const moon1 = {
-    lat: 25,
+    lat: 0,
     lng: 200,
-    alt: 0.8,
-    radius: 16,
+    alt: 1.5,
+    radius: 20,
     color: "orange",
+    orbitSpeed: 0.2,
     texture: moon1Texture,
   };
   const moon2 = {
-    lat: 20,
+    lat: 0,
     lng: 180,
-    alt: 0.6,
-    radius: 15,
+    alt: 1.02,
+    radius: 17,
     color: "red",
+    orbitSpeed: 1,
     texture: moon2Texture,
   };
   const N = 2;
@@ -116,6 +151,12 @@ onMounted(() => {
   Auberean.value.controls().autoRotate = true;
   Auberean.value.controls().autoRotateSpeed = 1.5;
 
+  (function moveSpheres() {
+    gData.forEach((d) => (d.lng += d.orbitSpeed));
+    Auberean.value.customLayerData(Auberean.value.customLayerData());
+    requestAnimationFrame(moveSpheres);
+  })();
+
   //   const globeMaterial = Auberean.globeMaterial();
   //   globeMaterial.bumpScale = 20;
   //   new THREE.TextureLoader().load(
@@ -149,12 +190,26 @@ onMounted(() => {
   left: 20px;
   z-index: 5000;
   width: 200px;
+  background: #000;
+  padding: 14px;
+  border: 1px solid #444;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
 }
 #controls button {
-    display: block;
-    width: 100%;
-    margin-bottom: 8px;
-    font-size: 18px;
-    padding: 6px 12px;
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 16px;
+  padding: 6px 10px;
+}
+
+#controls button:last-child {
+  margin-bottom: 0;
+}
+
+#controls button.active {
+    background: #797979;
+    color: #fff;
 }
 </style>
