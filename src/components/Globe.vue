@@ -7,6 +7,7 @@
         Globe of Auberean
       </button>
       <button type="button" @click="onChangeMap('map')">Map of Auberean</button>
+      <button type="button" @click="onChangeMap('sketch')">Early Sketch</button>
     </div>
   </div>
 </template>
@@ -40,6 +41,11 @@ const onChangeMap = (mapType) => {
     case "map":
       Auberean.value.globeImageUrl(
         getFullUrl("/auberean-globe/auberean-map.jpg")
+      );
+      break;
+    case "sketch":
+      Auberean.value.globeImageUrl(
+        getFullUrl("/auberean-globe/aub-sketch.jpg")
       );
       break;
   }
