@@ -194,10 +194,10 @@ const source = computed(() => {
     case "realistic":
     case "globe":
     case "map":
-      creditString = "© Copyright WB Games. Used for educational purposes.";
+      creditString = "Images: © Copyright WB Games. Used for educational purposes.";
       break;
     case "sketch":
-      creditString = `Source: <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Asheron's Call Wiki, Chris L'Etoile (Stormwaltz)</a>`;
+      creditString = `Images: <a href="https://asheron.fandom.com/wiki/File:Stormwaltz_Q%26A_image_3.jpeg" target="_blank">Asheron's Call Wiki, Chris L'Etoile (Stormwaltz)</a>`;
       break;
     default:
       creditString = null;
