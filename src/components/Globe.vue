@@ -228,22 +228,26 @@ const onChangeMap = (mapType) => {
       Auberean.value.globeImageUrl(
         getFullUrl("/auberean-globe/auberean-upscale.jpg?v=3")
       );
+      Auberean.value.atmosphereAltitude(0.18);
 
       break;
     case "globe":
       Auberean.value.globeImageUrl(
         getFullUrl("/auberean-globe/aub-globe-test.jpg?v=3")
       );
+      Auberean.value.atmosphereAltitude(0);
       break;
     case "map":
       Auberean.value.globeImageUrl(
         getFullUrl("/auberean-globe/auberean-map.jpg?v=3")
       );
+      Auberean.value.atmosphereAltitude(0);
       break;
     case "sketch":
       Auberean.value.globeImageUrl(
         getFullUrl("/auberean-globe/auberean-sketch.jpg?v=3")
       );
+      Auberean.value.atmosphereAltitude(0);
       //   showLabels.value = false;
       break;
   }
