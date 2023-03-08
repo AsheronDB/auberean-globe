@@ -1,6 +1,10 @@
 <template>
   <div>
     <div id="header">
+
+        <!-- <div class="tree">
+
+            <ul> -->
       <h1>Auberean</h1>
       <p>
         <span class="albarel">Alb'arel, </span
@@ -185,12 +189,13 @@ const drawLabels = () => {
   Auberean.value
     .htmlElementsData(LABELS_DATA.features)
     .htmlElement((d) => {
-      const labelEl = document.createElement("a");
-      labelEl.classList.add("label");
-      labelEl.style.fontSize = d.properties.labelSize + "px";
-      labelEl.innerHTML = d.properties.name;
-      labelEl.onclick = () => window.open("http://www.google.com", "_blank");
-      return labelEl;
+      const el = document.createElement("a");
+      el.classList.add("label");
+      el.style.fontSize = d.properties.labelSize + "px";
+      el.innerHTML = d.properties.name;
+      if (d.properties.fontStyle) el.style.fontStyle = d.properties.fontStyle;
+      el.onclick = () => window.open("http://www.google.com", "_blank");
+      return el;
     })
     .htmlLat((d) => d.geometry.coordinates[0])
     .htmlLng((d) => d.geometry.coordinates[1])

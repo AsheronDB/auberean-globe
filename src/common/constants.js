@@ -33,6 +33,18 @@ export const LABELS_DATA = {
       type: "Feature",
       geometry: {
         type: "Point",
+        coordinates: [10, -60],
+      },
+      properties: {
+        name: "Jhenecaer",
+        fontStyle: 'italic',
+        labelSize: 21,
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
         coordinates: [36, -145],
       },
       properties: {
