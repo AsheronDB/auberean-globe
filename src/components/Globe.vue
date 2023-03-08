@@ -226,23 +226,23 @@ const onChangeMap = (mapType) => {
   switch (mapType) {
     case "realistic":
       Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/auberean-upscale.jpg")
+        getFullUrl("/auberean-globe/auberean-upscale.jpg?v=3")
       );
 
       break;
     case "globe":
       Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/aub-globe-test.jpg")
+        getFullUrl("/auberean-globe/aub-globe-test.jpg?v=3")
       );
       break;
     case "map":
       Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/auberean-map.jpg")
+        getFullUrl("/auberean-globe/auberean-map.jpg?v=3")
       );
       break;
     case "sketch":
       Auberean.value.globeImageUrl(
-        getFullUrl("/auberean-globe/auberean-sketch.jpg")
+        getFullUrl("/auberean-globe/auberean-sketch.jpg?v=3")
       );
       //   showLabels.value = false;
       break;
@@ -283,7 +283,7 @@ onMounted(() => {
 
   console.log(aubereanRegions);
   Auberean.value(globeEl.value).globeImageUrl(
-    getFullUrl("/auberean-globe/auberean-upscale.jpg")
+    getFullUrl("/auberean-globe/auberean-upscale.jpg?v=3")
   );
 
   Auberean.value.backgroundImageUrl(
