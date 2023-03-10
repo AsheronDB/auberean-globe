@@ -8,6 +8,7 @@ export const GLOBE_LAYERS = {
 export const MOON_LAYERS = {
   NORMAL: "normal",
   DARK: "dark",
+  AC2: 'ac2'
 };
 
 export const MOONS = {

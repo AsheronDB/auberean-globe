@@ -161,6 +161,19 @@ const moonLayerData = ref([
       },
     ],
   },
+   {
+    label: "AC2 Moon",
+    handle: MOON_LAYERS.AC2,
+    data: [
+      {
+        ...Object.assign(MOONS.ALBAREL, {
+          texture: new THREE.TextureLoader().load(
+            getFullUrl(`/auberean-globe/img/ac2-albarel.jpg`)
+          ),
+        }),
+      },
+    ],
+  },
 ]);
 
 const activeMoonLayer = computed(() =>
