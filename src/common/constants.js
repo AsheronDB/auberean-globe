@@ -33,13 +33,25 @@ export const LABELS_DATA = {
       type: "Feature",
       geometry: {
         type: "Point",
+        coordinates: [-34, -3],
+      },
+      properties: {
+        name: "Atermore",
+        labelSize: 18,
+        url: "https://asheron.fandom.com/wiki/Atermore",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
         coordinates: [10, -60],
       },
       properties: {
         name: "Jhenecaer",
-        fontStyle: 'italic',
+        fontStyle: "italic",
         labelSize: 21,
-        url: 'https://asheron.fandom.com/wiki/AC:DM_CD_Lore/Dericost_Texts/The_Lay_of_Leikotha'
+        url: "https://asheron.fandom.com/wiki/AC:DM_CD_Lore/Dericost_Texts/The_Lay_of_Leikotha",
       },
     },
     {
@@ -51,7 +63,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Dericost",
         labelSize: 26,
-        url: 'https://asheron.fandom.com/wiki/Dericost'
+        url: "https://asheron.fandom.com/wiki/Dericost",
       },
     },
     {
@@ -63,7 +75,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Dereth",
         labelSize: 16,
-        url: 'https://asheron.fandom.com/wiki/Dereth'
+        url: "https://asheron.fandom.com/wiki/Dereth",
       },
     },
     {
@@ -75,7 +87,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Haebrous",
         labelSize: 26,
-        url: 'https://asheron.fandom.com/wiki/Haebrous'
+        url: "https://asheron.fandom.com/wiki/Haebrous",
       },
     },
     {
@@ -87,7 +99,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Ruschk",
         labelSize: 18,
-        url: 'https://asheron.fandom.com/wiki/Ruschk_Lore'
+        url: "https://asheron.fandom.com/wiki/Ruschk_Lore",
       },
     },
     {
@@ -99,7 +111,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Yalaini<br />Archipelago",
         labelSize: 24,
-        url: 'https://asheron.fandom.com/wiki/Yalaini_Lore'
+        url: "https://asheron.fandom.com/wiki/Yalaini_Lore",
       },
     },
     {
@@ -111,7 +123,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Black Rains<br />Impact Site",
         labelSize: 16,
-        url: 'https://asheron.fandom.com/wiki/Black_Rains'
+        url: "https://asheron.fandom.com/wiki/Black_Rains",
       },
     },
     {
@@ -123,7 +135,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Falatacot (?)",
         labelSize: 21,
-        url: 'https://asheron.fandom.com/wiki/Falatacot'
+        url: "https://asheron.fandom.com/wiki/Falatacot",
       },
     },
     {
@@ -135,7 +147,7 @@ export const LABELS_DATA = {
       properties: {
         name: "Uninhabited<br /><small>(Strange Ruins)</small>",
         labelSize: 14,
-        url: 'https://asheron.fandom.com/wiki/Prehistoric_Auberean'
+        url: "https://asheron.fandom.com/wiki/Prehistoric_Auberean",
       },
     },
   ],
